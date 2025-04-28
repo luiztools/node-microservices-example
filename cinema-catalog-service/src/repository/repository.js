@@ -8,7 +8,7 @@ async function getAllCities() {
 }
 
 async function getCinemasByCityId(cityId) {
-    const objCityId = ObjectId(cityId);
+    const objCityId = ObjectId.createFromHexString(cityId);
     const db = await database.connect();
     const cities = await db.collection("cinemaCatalog").find({ _id: objCityId }, { cinemas: 1 }).toArray();
     return cities[0].cinemas;
@@ -19,7 +19,7 @@ async function disconnect() {
 }
 
 async function getMoviesByCinemaId(cinemaId) {
-    const objCinemaId = ObjectId(cinemaId);
+    const objCinemaId = ObjectId.createFromHexString(cinemaId);
     const db = await database.connect();
     return db.collection("cinemaCatalog").aggregate([
         { $match: { "cinemas._id": objCinemaId } },
@@ -31,7 +31,7 @@ async function getMoviesByCinemaId(cinemaId) {
 }
 
 async function getMoviesByCityId(cityId) {
-    const objCityId = ObjectId(cityId);
+    const objCityId = ObjectId.createFromHexString(cityId);
     const db = await database.connect();
     const sessions = await db.collection("cinemaCatalog").aggregate([
         { $match: { "_id": objCityId } },
@@ -44,8 +44,8 @@ async function getMoviesByCityId(cityId) {
 }
 
 async function getMovieSessionsByCityId(movieId, cityId) {
-    const objMovieId = ObjectId(movieId);
-    const objCityId = ObjectId(cityId);
+    const objMovieId = ObjectId.createFromHexString(movieId);
+    const objCityId = ObjectId.createFromHexString(cityId);
     const db = await database.connect();
     const sessions = await db.collection("cinemaCatalog").aggregate([
         { $match: { "_id": objCityId } },
@@ -59,8 +59,8 @@ async function getMovieSessionsByCityId(movieId, cityId) {
 }
 
 async function getMovieSessionsByCinemaId(movieId, cinemaId) {
-    const objCinemaId = ObjectId(cinemaId);
-    const objMovieId = ObjectId(movieId);
+    const objCinemaId = ObjectId.createFromHexString(cinemaId);
+    const objMovieId = ObjectId.createFromHexString(movieId);
     const db = await database.connect();
     const sessions = await db.collection("cinemaCatalog").aggregate([
         { $match: { "cinemas._id": objCinemaId } },
